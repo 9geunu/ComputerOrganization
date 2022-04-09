@@ -20,7 +20,7 @@ module ALU
 // combinational logic 
 always @(*) begin
   case (alu_func)
-    `OP_ADD:  result = in_a +  in_b; 
+    `OP_ADD:  result = in_a +  in_b;
     `OP_SUB:  result = in_a -  in_b;
     `OP_XOR:  result = in_a ^  in_b;
     `OP_OR:   result = in_a |  in_b;
@@ -31,6 +31,13 @@ always @(*) begin
     // - The example below is given as a hint
     // - `OP_SRA: result = $signed(in_a) >>> in_b[4:0];
     //////////////////////////////////////////////////////////////////////////
+    `OP_SRA: result = $signed(in_a) >>> in_b[4:0];
+    `OP_SLL: result = in_a << in_b;
+    `OP_SRL: result = in_a >> in_b;
+    `OP_SLT: result = ($signed(in_a) < $signed(in_b)) ? 1 : 0;
+    `OP_SLTU: result = (in_a < in_b) ? 1 : 0;
+    // `OP_BGE: result = 
+    // `OP_BGEU: result = 
     default:  result = 32'h0000_0000;
   endcase
 end
@@ -41,6 +48,8 @@ always @(*) begin
     //////////////////////////////////////////////////////////////////////////
     // TODO : Generate check signal
     //////////////////////////////////////////////////////////////////////////
+    0: check = 1'b0;
+    1: check = 1'b1;
     default:  check = 1'b0;
   endcase
 end
