@@ -16,6 +16,7 @@ always @(*) begin
     //////////////////////////////////////////////////////////////////////////
     // TODO : Generate sextimm using instruction
     //////////////////////////////////////////////////////////////////////////
+    7'b0010011: sextimm = { {21{instruction[31]}}, instruction[30:20] };
     default:    sextimm = 32'h0000_0000;
   endcase
 end

@@ -70,6 +70,19 @@ always @(*) begin
       ///////////////////////////////////////////////////////////////////////
       // TODO : select operation for I-types with immediate
       ///////////////////////////////////////////////////////////////////////
+      case (funct3)
+        3'b000: alu_func = `OP_ADD;
+        // 3'b000: alu_func = `OP_SUB;
+        3'b100: alu_func = `OP_XOR;
+        3'b110: alu_func = `OP_OR;
+        3'b111: alu_func = `OP_AND;
+        3'b001: alu_func = `OP_SLL;
+        3'b101: alu_func = `OP_SRL;
+        3'b101: alu_func = `OP_SRA;
+        3'b010: alu_func = `OP_SLT;
+        3'b011: alu_func = `OP_SLTU;
+        default:  alu_func = `OP_EEE;  // shoud not fall here 
+      endcase
     end
     default: alu_func = `OP_EEE;       // should not fall here
   endcase
