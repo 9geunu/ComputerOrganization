@@ -32,10 +32,10 @@ always @(*) begin
     // - `OP_SRA: result = $signed(in_a) >>> in_b[4:0];
     //////////////////////////////////////////////////////////////////////////
     `OP_SRA: result = $signed(in_a) >>> in_b[4:0];
-    `OP_SLL: result = in_a << in_b;
-    `OP_SRL: result = in_a >> in_b;
+    `OP_SLL: result = in_a << in_b[4:0];
+    `OP_SRL: result = in_a >> in_b[4:0];
     `OP_SLT: result = ($signed(in_a) < $signed(in_b)) ? 1 : 0;
-    `OP_SLTU: result = (in_a < in_b) ? 1 : 0;
+    `OP_SLTU: result = ($unsigned(in_a) < $unsigned(in_b)) ? 1 : 0;
     // `OP_BGE: result = 
     // `OP_BGEU: result = 
     default:  result = 32'h0000_0000;
