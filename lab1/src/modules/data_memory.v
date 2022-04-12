@@ -22,6 +22,9 @@ module data_memory #(
 
   assign address_internal = address[MEM_ADDR_SIZE+1:2]; // 256 = 8-bit address
 
+  wire [2:0] sext_mask;
+  assign sext_mask = {sext, maskmode};
+
   // update at negative edge
   always @(negedge clk) begin 
     if (mem_write == 1'b1) begin
@@ -29,6 +32,11 @@ module data_memory #(
       // TODO : Perform writes (select certain bits from write_data
       // according to maskmode
       ////////////////////////////////////////////////////////////////////////
+      case (maskmode)
+        2'b00: mem_array[address_internal][7:0] <= write_data[7:0];
+        2'b01: mem_array[address_internal][15:0] <= write_data[15:0];
+        2'b10: mem_array[address_internal][31:0] <= write_data[31:0];
+      endcase
     end
   end
 
@@ -38,6 +46,14 @@ module data_memory #(
       ////////////////////////////////////////////////////////////////////////
       // TODO : Perform reads (select bits according to sext & maskmode)
       ////////////////////////////////////////////////////////////////////////
+      case (sext_mask)
+        3'b0_00: read_data <= { {25{mem_array[address_internal][7]}}, mem_array[address_internal][6:0] };
+        3'b0_01: read_data <= { {17{mem_array[address_internal][15]}}, mem_array[address_internal][14:0] };
+        3'b0_10: read_data <= mem_array[address_internal][31:0];
+        3'b1_00: read_data <= { {24{1'b0}}, mem_array[address_internal][7:0] };
+        3'b1_01: read_data <= { {16{1'b0}}, mem_array[address_internal][15:0] };
+        default: read_data = 32'h0000_0000;
+      endcase
     end else begin
       read_data = 32'h0000_0000;
     end
