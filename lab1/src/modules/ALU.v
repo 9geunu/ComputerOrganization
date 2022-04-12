@@ -36,8 +36,9 @@ always @(*) begin
     `OP_SRL: result = in_a >> in_b[4:0];
     `OP_SLT: result = ($signed(in_a) < $signed(in_b)) ? 1 : 0;
     `OP_SLTU: result = ($unsigned(in_a) < $unsigned(in_b)) ? 1 : 0;
-    // `OP_BGE: result = 
-    // `OP_BGEU: result = 
+    `OP_BGE: result = ($signed(in_a) >= $signed(in_b)) ? 1 : 0;
+    `OP_BGEU: result = ($unsigned(in_a) >= $unsigned(in_b)) ? 1 : 0;
+    `OP_BNE: result = (in_a != in_b) ? 1 : 0;
     default:  result = 32'h0000_0000;
   endcase
 end
@@ -48,8 +49,19 @@ always @(*) begin
     //////////////////////////////////////////////////////////////////////////
     // TODO : Generate check signal
     //////////////////////////////////////////////////////////////////////////
-    0: check = 1'b0;
-    1: check = 1'b1;
+    `OP_ADD: check = (result == 0) ? 1 : 0;
+    `OP_SUB: check = (result == 0) ? 1 : 0;
+    `OP_XOR: check = (result == 0) ? 1 : 0;
+    `OP_OR: check = (result == 0) ? 1 : 0;
+    `OP_AND: check = (result == 0) ? 1 : 0;
+    `OP_SRA: check = (result == 0) ? 1 : 0;
+    `OP_SLL: check = (result == 0) ? 1 : 0;
+    `OP_SRL: check = (result == 0) ? 1 : 0;
+    `OP_SLT: check = (result == 1) ? 1 : 0;
+    `OP_SLTU: check = (result == 1) ? 1 : 0;
+    `OP_BGE: check = (result == 1) ? 1 : 0;
+    `OP_BGEU: check = (result == 1) ? 1 : 0;
+    `OP_BNE: check = (result == 1) ? 1 : 0;
     default:  check = 1'b0;
   endcase
 end

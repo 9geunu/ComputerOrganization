@@ -29,6 +29,7 @@ always @(*) begin
     7'b0010011: controls = 10'b00_000_11_011; // I-type
     7'b0000011: controls = 10'b00_011_00_011; // Load
     7'b0100011: controls = 10'b00_001_00_110; // Store
+    7'b1100011: controls = 10'b00_100_01_000; // B-type
     default:    controls = 10'b00_000_00_000;
   endcase
 end
