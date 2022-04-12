@@ -16,7 +16,9 @@ always @(*) begin
     //////////////////////////////////////////////////////////////////////////
     // TODO : Generate sextimm using instruction
     //////////////////////////////////////////////////////////////////////////
-    7'b0010011: sextimm = { {21{instruction[31]}}, instruction[30:20] };
+    7'b0010011: sextimm = { {21{instruction[31]}}, instruction[30:20] }; // I-type
+    7'b0000011: sextimm = { {21{instruction[31]}}, instruction[30:20] }; // Load
+    7'b0100011: sextimm = { {21{instruction[31]}}, instruction[30:25], instruction[11:7] }; // Store
     default:    sextimm = 32'h0000_0000;
   endcase
 end

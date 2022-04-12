@@ -194,12 +194,31 @@ assign NEXT_PC = PC_PLUS_4;
 // TODO : Feed the appropriate inputs to the data memory
 //////////////////////////////////////////////////////////////////////////////
 /* m_data_memory: data memory */
+reg [1:0] maskmode;
+reg sext;
+
+always @(*) begin
+  if (funct3 == 3'b000 || funct3 == 3'b100) begin
+    maskmode = 2'b00;
+  end else if (funct3 == 3'b001 || funct3 == 3'b101) begin
+    maskmode = 2'b01;
+  end else if (funct3 == 3'b010) begin
+    maskmode = 2'b10;
+  end
+
+  if (funct3 == 3'b100 || funct3 == 3'b101) begin
+    sext = 1'b1;
+  end else begin
+    sext = 1'b0;
+  end
+end
+
 data_memory m_data_memory(
   .clk(clk),
   .mem_write(mem_write),
   .mem_read(mem_read),
-  .maskmode(2'b00),
-  .sext(1'b0),
+  .maskmode(maskmode),
+  .sext(sext),
   .address(alu_out),
   .write_data(rs2_out),
 
@@ -215,13 +234,12 @@ data_memory m_data_memory(
 ///////////////////////////////////////////////////////////////////////////////
 // TODO : Need a fix
 //////////////////////////////////////////////////////////////////////////////
-assign write_data = alu_out;
-// mux_2x1 m_mux_2x1_2(
-//   .select(mem_to_reg),
-//   .in1(alu_out),
-//   .in2(read_data),
+mux_2x1 m_mux_2x1_2(
+  .select(mem_to_reg),
+  .in1(alu_out),
+  .in2(read_data),
 
-//   .out(write_data)
-// );
+  .out(write_data)
+);
 //////////////////////////////////////////////////////////////////////////////
 endmodule
