@@ -187,8 +187,22 @@ branch_control m_branch_control(
 // TODO : Currently, NEXT_PC is always PC_PLUS_4. Using adders and muxes & 
 // control signals, compute & assign the correct NEXT_PC.
 //////////////////////////////////////////////////////////////////////////////
-assign NEXT_PC = PC_PLUS_4;
+wire [31:0] adder_result;
 
+adder m_adder(
+  .in_a(PC),
+  .in_b(sextimm),
+
+  .result(adder_result)
+);
+
+mux_2x1 m_mux_2x1_3(
+  .select(taken),
+  .in1(PC_PLUS_4),
+  .in2(adder_result),
+
+  .out(NEXT_PC)
+);
 
 ///////////////////////////////////////////////////////////////////////////////
 // TODO : Feed the appropriate inputs to the data memory

@@ -14,7 +14,7 @@
 `define OP_SLTU 4'b1001
 `define OP_BGE   4'b1010
 `define OP_BGEU   4'b1011
-
+`define OP_BNE  4'b1100
 `define OP_EEE  4'b1111   // error
 
 `endif // __defines_vh__
